@@ -55,9 +55,51 @@
       (cons (first ls1) (append (rest ls1) ls2))))
 
 
-;(define (reverse ls)      // Invierte el orden, pero regresa pares y no una lista...
-;  (if (empty? ls)
-;      ls
-;      (cons (reverse (rest ls))(first ls))))    
+(define (reverse ls)
+  'fail)
 
+
+(define (repeat ls n)
+  'fail)
+
+
+(define (same-lists* ls1 ls2)
+  'fail)
+
+
+(define (binary->natural binList)
+  'fail)
+
+
+(define (div a b)
+  'fail)
+
+
+(define (append-map p ls)
+  'fail)
+
+
+(define (set-difference s1 s2)
+  'fail)
+
+
+(define (folder binOp cnt ls)
+  'fail)
+
+
+(define (powerset ls)
+  'fail)
+
+
+(define (cartesian-product ls)
+  'fail)
+
+
+(define (snowball n)
+  'fail)
+
+
+(define (quine ls)
+  'fail)
+  
 (provide (all-defined-out))
