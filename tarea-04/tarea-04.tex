@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage{blindtext}
+\usepackage{ragged2e}
+\usepackage{fancyvrb}
+
+
+\title{Tarea 4: Ejercicios PROC}
+\author{Daniel Rubén Ochoa Galván}
+\begin{document}
+\maketitle
+\begin{center}
+	Lenguajes de Programación
+\end{center}
+
+Exercise 3.20. [$\star$] In PROC, procedures have only one argument, but one can get the effect of multiple argument procedures by using procedures that return other procedures. For example, one might write code like
+
+\begin{Verbatim}
+	let f = proc (x) proc (y) ...
+	in ((f 3) 4)
+\end{Verbatim}
+
+This trick is called \emph{Currying}, and the procedure is said to be \emph{Curried}. Write a Curried procedure that takes two arguments and returns their sum. You can write $x + y$ in our language by writing $-(x, -(0, y))$.
+
+
+\begin{Verbatim}[fontfamily=helvetica, frame=lines]
+		let suma = proc (x) proc (y) -(x, -(0, y)) ...
+\end{Verbatim}
+
+Exercise 3.27 [$\star$] Add a new kind of procedure called a \texttt{traceproc} to the language. A \texttt{traceproc} works exactly like a \texttt{proc}, except that it prints a trace message on entry and on exit. \\
+Extendiendo el lenguaje agregando a la sintaxis concreta:
+\begin{center}
+\emph{Expression}  ::=  \texttt{traceproc} (\emph{Identifier}) \emph{Expression}
+\end{center}
+Extendiendo el lenguaje agregando a la sintaxis abstracta:
+\begin{center}
+(traceproc-exp \emph{var} \emph{body})
+\end{center}
+Especificando la semántica:
+\begin{Verbatim}[fontfamily=helvetica, frame=topline]
+	(value-of (proc-exp var body) env)
+	   = (proc-val (procedure var body env))
+\end{Verbatim}
+\emph{donde:}
+\begin{Verbatim}[fontfamily=helvetica, frame=bottomline]
+	(apply-procedure (procedure var body env) val)
+	   = (value-of body [var = val] env)
+\end{Verbatim}
+Modificando la implementación de \texttt{apply-procedure} para integrar la especificación de \texttt{traceproc}:
+
+\begin{Verbatim}[fontfamily=helvetica, frame=lines]
+(define (apply-procedure proc val)
+  (unless (procedure? proc)
+    (error 'value-of "no es un procedimiento: ~e" proc))
+  (let ([var (procedure-var proc)]
+        [body (procedure-body proc)]
+        [saved-env (procedure-saved-env proc)])
+    (cond
+      [(traceproc-exp? proc)
+       (display ("Entrando a proc..."))
+       (value-of body (extend-env var val saved-env))
+       (display ("Saliendo de proc..."))]
+      [(proc-exp? proc)
+       (value-of body (extend-env var val saved-env))])))
+\end{Verbatim}
+
+
+\end{document}
